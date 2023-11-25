@@ -12,9 +12,15 @@ const FormContainer = styled(animated.div)`
 
 const PerguntaContainer = styled(animated.div)`
   background-color: #f9f9f9;
-  padding: 20px;
+  padding: 60px;
   border-radius: 8px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  color: #333; /* Cor do texto padrão */
+`;
+
+const DarkModePerguntaContainer = styled(PerguntaContainer)`
+  background-color: #333; /* Cor de fundo no modo escuro */
+  color: #fff; /* Cor do texto no modo escuro */
 `;
 
 const FormularioForm = styled.form`
@@ -39,7 +45,7 @@ const Input = styled.input`
 const Button = styled.button`
   margin-top: 10px;
   padding: 10px 16px;
-  background-color: #4caf50;
+  background-color: #4682B4;
   color: white;
   border: none;
   border-radius: 4px;
@@ -78,12 +84,12 @@ const Formulario = ({ perguntaAtual, avancarPergunta }) => {
 
   return (
     <FormContainer style={fade}>
-      <PerguntaContainer style={slide}>
-        {concluido ? (
-          <MensagemFinal>
-            Seu formulário foi concluído, obrigado!
-          </MensagemFinal>
-        ) : (
+      {concluido ? (
+        <MensagemFinal>
+          Seu formulário foi concluído, obrigado!
+        </MensagemFinal>
+      ) : (
+        <PerguntaContainer style={slide}>
           <FormularioForm onSubmit={handleSubmit}>
             <Label>
               Pergunta {perguntaAtual}:
@@ -98,8 +104,8 @@ const Formulario = ({ perguntaAtual, avancarPergunta }) => {
               {perguntaAtual < 5 ? 'Próxima Pergunta' : 'Concluir'}
             </Button>
           </FormularioForm>
-        )}
-      </PerguntaContainer>
+        </PerguntaContainer>
+      )}
     </FormContainer>
   );
 };
