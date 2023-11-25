@@ -26,8 +26,15 @@ const Button = styled.button`
   cursor: pointer;
 `;
 
+const MensagemFinal = styled.div`
+  font-size: 20px;
+  text-align: center;
+  margin-top: 20px;
+`;
+
 const Formulario = ({ perguntaAtual, avancarPergunta }) => {
   const [resposta, setResposta] = useState('');
+  const [concluido, setConcluido] = useState(false);
 
   const handleChange = (valor) => {
     setResposta(valor);
@@ -36,16 +43,21 @@ const Formulario = ({ perguntaAtual, avancarPergunta }) => {
   const handleSubmit = (event) => {
     event.preventDefault();
     console.log(`Resposta ${perguntaAtual}: ${resposta}`);
-    avancarPergunta();
-    setResposta('');
+    
+    if (perguntaAtual < 5) {
+      avancarPergunta();
+      setResposta('');
+    } else {
+      setConcluido(true);
+    }
   };
 
   return (
     <>
-      <PerguntaContainer visivel={perguntaAtual === 1}>
+      <PerguntaContainer visivel={perguntaAtual <= 5 && !concluido}>
         <form onSubmit={handleSubmit}>
           <Label>
-            Pergunta 1:
+            Pergunta {perguntaAtual}:
             <Input
               type="text"
               value={resposta}
@@ -53,76 +65,16 @@ const Formulario = ({ perguntaAtual, avancarPergunta }) => {
               required
             />
           </Label>
-          <Button type="submit">Próxima Pergunta</Button>
+          <Button type="submit">
+            {perguntaAtual < 5 ? 'Próxima Pergunta' : 'Concluir'}
+          </Button>
         </form>
       </PerguntaContainer>
 
-      {perguntaAtual === 2 && (
-        <PerguntaContainer visivel={perguntaAtual === 2}>
-          <form onSubmit={handleSubmit}>
-            <Label>
-              Pergunta 2:
-              <Input
-                type="text"
-                value={resposta}
-                onChange={(e) => handleChange(e.target.value)}
-                required
-              />
-            </Label>
-            <Button type="submit">Próxima Pergunta</Button>
-          </form>
-        </PerguntaContainer>
-      )}
-
-      {perguntaAtual === 3 && (
-        <PerguntaContainer visivel={perguntaAtual === 3}>
-          <form onSubmit={handleSubmit}>
-            <Label>
-              Pergunta 3:
-              <Input
-                type="text"
-                value={resposta}
-                onChange={(e) => handleChange(e.target.value)}
-                required
-              />
-            </Label>
-            <Button type="submit">Próxima Pergunta</Button>
-          </form>
-        </PerguntaContainer>
-      )}
-
-      {perguntaAtual === 4 && (
-        <PerguntaContainer visivel={perguntaAtual === 4}>
-          <form onSubmit={handleSubmit}>
-            <Label>
-              Pergunta 4:
-              <Input
-                type="text"
-                value={resposta}
-                onChange={(e) => handleChange(e.target.value)}
-                required
-              />
-            </Label>
-            <Button type="submit">Próxima Pergunta</Button>
-          </form>
-        </PerguntaContainer>
-      )}
-
-      {perguntaAtual === 5 && (
-        <PerguntaContainer visivel={perguntaAtual === 5}>
-          <form onSubmit={handleSubmit}>
-            <Label>
-              Pergunta 5:
-              <Input
-                type="text"
-                value={resposta}
-                onChange={(e) => handleChange(e.target.value)}
-                required
-              />
-            </Label>
-            <Button type="submit">Concluir</Button>
-          </form>
-        </PerguntaContainer>
+      {concluido && (
+        <MensagemFinal>
+          Seu formulário foi concluído, obrigado!
+        </MensagemFinal>
       )}
     </>
   );
