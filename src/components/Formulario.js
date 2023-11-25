@@ -8,6 +8,7 @@ const FormContainer = styled(animated.div)`
   justify-content: center;
   align-items: center;
   height: 100vh;
+  perspective: 1000px;
 `;
 
 const PerguntaContainer = styled(animated.div)`
@@ -15,8 +16,17 @@ const PerguntaContainer = styled(animated.div)`
   padding: 60px;
   border-radius: 8px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  color: #333; /* Cor do texto padrão */
+  transform-style: preserve-3d;
+  transition: transform 0.5s ease-in-out;
+  backface-visibility: hidden; /* Evita renderização ruim no verso da caixa */
+  image-rendering: optimizeQuality; /* Melhora a qualidade da imagem */
+  font-smooth: always; /* Melhora a qualidade da fonte */
+  -webkit-font-smoothing: antialiased; /* Melhora a qualidade da fonte no Chrome */
+  &:hover {
+    transform: scale(1.02) rotateY(1.5deg) rotateX(1.5deg);
+  }
 `;
+
 
 const DarkModePerguntaContainer = styled(PerguntaContainer)`
   background-color: #333; /* Cor de fundo no modo escuro */
@@ -84,12 +94,12 @@ const Formulario = ({ perguntaAtual, avancarPergunta }) => {
 
   return (
     <FormContainer style={fade}>
-      {concluido ? (
-        <MensagemFinal>
-          Seu formulário foi concluído, obrigado!
-        </MensagemFinal>
-      ) : (
-        <PerguntaContainer style={slide}>
+      <PerguntaContainer style={slide}>
+        {concluido ? (
+          <MensagemFinal>
+            Seu formulário foi concluído, obrigado!
+          </MensagemFinal>
+        ) : (
           <FormularioForm onSubmit={handleSubmit}>
             <Label>
               Pergunta {perguntaAtual}:
@@ -104,8 +114,8 @@ const Formulario = ({ perguntaAtual, avancarPergunta }) => {
               {perguntaAtual < 5 ? 'Próxima Pergunta' : 'Concluir'}
             </Button>
           </FormularioForm>
-        </PerguntaContainer>
-      )}
+        )}
+      </PerguntaContainer>
     </FormContainer>
   );
 };

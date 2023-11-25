@@ -1,3 +1,4 @@
+// src/App.js
 import React, { useState } from 'react';
 import Formulario from './components/Formulario';
 import styled from 'styled-components';
@@ -10,14 +11,15 @@ const AppContainer = styled.div`
   justify-content: center;
   min-height: 100vh;
   background-color: ${props => (props.modoEscuro ? '#222' : '#fff')};
-  color: ${props => (props.modoEscuro ? '#fff' : '#000')};
+  color: ${props => (props.modoEscuro ? '#000' : '#000')};
+  font-family: 'Arial', sans-serif;
 `;
 
 const Titulo = styled.h1`
-  font-family: 'Arial', sans-serif;
-  font-size: 32px;
-  margin-bottom: 20px;
+  font-size: 2em;
+  margin-bottom: 10px;
   text-align: center;
+  color: ${props => (props.modoEscuro ? '#4682B4' : '#4682B4')};
 `;
 
 function App() {
@@ -36,7 +38,7 @@ function App() {
     <AppContainer modoEscuro={modoEscuro}>
       <DarkModeToggle toggleModoEscuro={toggleModoEscuro} />
       <header className="App-header">
-        <Titulo>Formulário</Titulo>
+        <Titulo modoEscuro={modoEscuro}>Formulário</Titulo>
         <Formulario
           perguntaAtual={perguntaAtual}
           avancarPergunta={avancarPergunta}
