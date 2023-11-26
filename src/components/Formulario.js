@@ -74,6 +74,12 @@ const Checkbox = styled.input`
   margin-top: 10px;
 `;
 
+const MensagemErro = styled.p`
+  color: red;
+  font-size: 14px;
+  margin-top: 5px;
+`;
+
 const perguntas = [
   {
     texto: 'Você deseja começar com CPF ou CNPJ?',
@@ -105,6 +111,7 @@ const perguntas = [
 const Formulario = ({ perguntaAtual, avancarPergunta }) => {
   const [resposta, setResposta] = useState([]);
   const [concluido, setConcluido] = useState(false);
+  const [mostrarErro, setMostrarErro] = useState(false);
 
   const fade = useSpring({ opacity: 1, from: { opacity: 0 } });
   const slide = useSpring({ marginLeft: '0%', from: { marginLeft: '-100%' } });
@@ -120,18 +127,35 @@ const Formulario = ({ perguntaAtual, avancarPergunta }) => {
     }
 
     setResposta(opcoesSelecionadas);
+    setMostrarErro(false);
   };
 
   const renderPergunta = (pergunta) => {
     switch (pergunta.tipo) {
       case 'opcoes':
-        return renderOpcoes(pergunta.opcoes);
+        return pergunta.texto === 'Você deseja começar com CPF ou CNPJ?' ? (
+          <>
+            {renderOpcoes(pergunta.opcoes)}
+            {resposta.includes('CPF') || resposta.includes('CNPJ') ? (
+              <React.Fragment>
+                <Label>Número do {resposta.includes('CPF') ? 'CPF' : 'CNPJ'}:</Label>
+                <Input
+                  type="text"
+                  value={resposta}
+                  onChange={(e) => setResposta(e.target.value)}
+                />
+              </React.Fragment>
+            ) : null}
+          </>
+        ) : (
+          renderOpcoes(pergunta.opcoes)
+        );
       case 'texto':
         return (
           <Input
             type="text"
             value={resposta}
-            onChange={(e) => handleChange(e.target.value)}
+            onChange={(e) => setResposta(e.target.value)}
           />
         );
       // Adicione mais tipos conforme necessário
@@ -158,15 +182,16 @@ const Formulario = ({ perguntaAtual, avancarPergunta }) => {
     ));
   };
 
-  const handleChange = (valor) => {
-    setResposta(valor);
-  };
-
   const handleSubmit = (event) => {
     event.preventDefault();
 
     if (perguntaAtual <= perguntas.length) {
-      avancarPergunta();
+      if (perguntaAtual === 1 && resposta.length === 0) {
+        setMostrarErro(true);
+      } else {
+        avancarPergunta();
+        setMostrarErro(false);
+      }
     } else {
       setConcluido(true);
     }
@@ -187,9 +212,16 @@ const Formulario = ({ perguntaAtual, avancarPergunta }) => {
               <React.Fragment>
                 <Label>{perguntas[perguntaAtual - 1].texto}</Label>
                 {renderPergunta(perguntas[perguntaAtual - 1])}
+                {mostrarErro && <MensagemErro>Selecione uma opção</MensagemErro>}
               </React.Fragment>
             )}
-            <Button type="submit">
+            <Button
+              type="submit"
+              disabled={
+                mostrarErro ||
+                (perguntaAtual <= perguntas.length && resposta.length === 0)
+              }
+            >
               {perguntaAtual < perguntas.length + 1 ? 'Próxima Pergunta' : 'Concluir'}
             </Button>
           </FormularioForm>
