@@ -116,8 +116,16 @@ const Formulario = ({ perguntaAtual, avancarPergunta }) => {
   const fade = useSpring({ opacity: 1, from: { opacity: 0 } });
   const slide = useSpring({ marginLeft: '0%', from: { marginLeft: '-100%' } });
 
-  const toggleCheckbox = (opcao) => {
-    const opcoesSelecionadas = [...resposta];
+  
+const toggleCheckbox = (opcao) => {
+  let opcoesSelecionadas;
+
+  if (perguntas[perguntaAtual - 1].tipo === 'opcoes') {
+    // Para perguntas do tipo 'opcoes', permite apenas uma opção selecionada
+    opcoesSelecionadas = [opcao];
+  } else {
+    // Para outros tipos de perguntas, mantém a lógica original
+    opcoesSelecionadas = [...resposta];
 
     if (opcoesSelecionadas.includes(opcao)) {
       const index = opcoesSelecionadas.indexOf(opcao);
@@ -125,10 +133,11 @@ const Formulario = ({ perguntaAtual, avancarPergunta }) => {
     } else {
       opcoesSelecionadas.push(opcao);
     }
+  }
 
-    setResposta(opcoesSelecionadas);
-    setMostrarErro(false);
-  };
+  setResposta(opcoesSelecionadas);
+  setMostrarErro(false);
+};
 
   const renderPergunta = (pergunta) => {
     switch (pergunta.tipo) {
