@@ -11,6 +11,7 @@ const DarkModeButton = styled.button`
   padding: 5px 10px;
   cursor: pointer;
   border-radius: 4px;
+  font-family:  Andale Mono, monospace;
 `;
 
 const DarkModeToggle = ({ toggleModoEscuro }) => {

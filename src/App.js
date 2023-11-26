@@ -4,6 +4,7 @@ import Formulario from './components/Formulario';
 import styled from 'styled-components';
 import DarkModeToggle from './DarkModeToggle';
 
+
 const AppContainer = styled.div`
   display: flex;
   flex-direction: column;
@@ -12,13 +13,14 @@ const AppContainer = styled.div`
   min-height: 100vh;
   background-color: ${props => (props.modoEscuro ? '#222' : '#fff')};
   color: ${props => (props.modoEscuro ? '#000' : '#000')};
-  font-family: 'Arial', sans-serif;
+  font-family:  Andale Mono, monospace;
 `;
 
 const Titulo = styled.h1`
   font-size: 2em;
-  margin-bottom: 10px;
+  margin-bottom: -120px;
   text-align: center;
+  font-family:  Andale Mono, monospace;
   color: ${props => (props.modoEscuro ? '#4682B4' : '#4682B4')};
 `;
 

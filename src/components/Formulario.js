@@ -2,6 +2,7 @@
 import React, { useState } from 'react';
 import { useSpring, animated } from 'react-spring';
 import styled from 'styled-components';
+import '../index.css';
 
 const FormContainer = styled(animated.div)`
   display: flex;
@@ -61,6 +62,7 @@ const Button = styled.button`
   border-radius: 4px;
   cursor: pointer;
   font-size: 16px;
+  font-family:  Andale Mono, monospace;
 `;
 
 const MensagemFinal = styled(animated.div)`
