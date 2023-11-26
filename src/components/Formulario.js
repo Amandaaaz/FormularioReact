@@ -54,7 +54,7 @@ const Input = styled.input`
 `;
 
 const Button = styled.button`
-  margin-top: 10px;
+  margin-top: 35px;
   padding: 10px 16px;
   background-color: #4682B4;
   color: white;
