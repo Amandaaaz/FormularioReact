@@ -140,39 +140,40 @@ const toggleCheckbox = (opcao) => {
   setMostrarErro(false);
 };
 
-  const renderPergunta = (pergunta) => {
-    switch (pergunta.tipo) {
-      case 'opcoes':
-        return pergunta.texto === 'Você deseja começar com CPF ou CNPJ?' ? (
-          <>
-            {renderOpcoes(pergunta.opcoes)}
-            {resposta.includes('CPF') || resposta.includes('CNPJ') ? (
-              <React.Fragment>
-                <Label>Número do {resposta.includes('CPF') ? 'CPF' : 'CNPJ'}:</Label>
-                <Input
-                  type="text"
-                  value={resposta}
-                  onChange={(e) => setResposta(e.target.value)}
-                />
-              </React.Fragment>
-            ) : null}
-          </>
-        ) : (
-          renderOpcoes(pergunta.opcoes)
-        );
-      case 'texto':
-        return (
-          <Input
-            type="text"
-            value={resposta}
-            onChange={(e) => setResposta(e.target.value)}
-          />
-        );
-      // Adicione mais tipos conforme necessário
-      default:
-        return null;
-    }
-  };
+const renderPergunta = (pergunta) => {
+  switch (pergunta.tipo) {
+    case 'opcoes':
+      return pergunta.texto === 'Você deseja começar com CPF ou CNPJ?' ? (
+        <>
+          {renderOpcoes(pergunta.opcoes)}
+          {(resposta.includes('CPF') || resposta.includes('CNPJ')) && (
+            <React.Fragment>
+              <Label>Número do {resposta.includes('CPF') ? 'CPF' : 'CNPJ'}:</Label>
+              <Input
+                type="text"
+                value={(resposta.includes('CPF') || resposta.includes('CNPJ')) ? resposta[1] : ''}
+                onChange={(e) => setResposta(['CPF', e.target.value])}
+              />
+            </React.Fragment>
+          )}
+        </>
+      ) : (
+        renderOpcoes(pergunta.opcoes)
+      );
+    case 'texto':
+      return (
+        <Input
+          type="text"
+          value={resposta[0] || ''}
+          onChange={(e) => setResposta([e.target.value])}
+        />
+      );
+    // Adicione mais tipos conforme necessário
+    default:
+      return null;
+  }
+};
+
 
   const renderOpcoes = (opcoes) => {
     return opcoes.map((opcao, index) => (
