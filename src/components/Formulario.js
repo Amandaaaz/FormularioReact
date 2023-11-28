@@ -106,7 +106,36 @@ const perguntas = [
     tipo: 'opcoes',
     opcoes: ['4 a 10', '11 a 30', '31 a 50', '50+', '100+'],
   },
-  // Adicione mais perguntas conforme necessário
+  {
+    texto: 'Qual a Sua Função Na Empresa?*',
+    tipo: 'opcoes',
+    opcoes: ['CEO', 'SENIOR', 'FOUNDER', 'JR', 'VENDEDOR', 'REPRESENTANTE', 'OUTROS'],
+  },
+  {
+    texto: 'Sua Empresa Pertence a qual iniciativa setorial?',
+    tipo: 'texto',
+  },
+  {
+    texto: 'Sua Empresa é um negócio de impacto?',
+    tipo: 'texto',
+  },
+  {
+    texto: 'Qual a finalidade do uso da sala ou do laboratório da softexlabs?',
+    tipo: 'texto',
+  },
+  {
+    texto: 'Você Busca criar uma patente na SoftexLabs?',
+    tipo: 'opcoes',
+    opcoes: ['Sim', 'Não'],
+  },
+  {
+    texto: 'Quantas Pessoas utilizarão a sala (Máximo 8 pessoas):',
+    tipo: 'texto',
+  },
+  {
+    texto: 'Descreva dia e horário:',
+    tipo: 'texto',
+  },
 ];
 
 const Formulario = ({ perguntaAtual, avancarPergunta }) => {
@@ -140,6 +169,8 @@ const toggleCheckbox = (opcao) => {
   setMostrarErro(false);
 };
 
+// ... (código anterior)
+
 const renderPergunta = (pergunta) => {
   switch (pergunta.tipo) {
     case 'opcoes':
@@ -151,6 +182,7 @@ const renderPergunta = (pergunta) => {
               <Label>Número do {resposta.includes('CPF') ? 'CPF' : 'CNPJ'}:</Label>
               <Input
                 type="text"
+                placeholder="Digite sua resposta"
                 value={(resposta.includes('CPF') || resposta.includes('CNPJ')) ? resposta[1] : ''}
                 onChange={(e) => setResposta(['CPF', e.target.value])}
               />
@@ -164,6 +196,7 @@ const renderPergunta = (pergunta) => {
       return (
         <Input
           type="text"
+          placeholder="Digite sua resposta"
           value={resposta[0] || ''}
           onChange={(e) => setResposta([e.target.value])}
         />
@@ -174,24 +207,26 @@ const renderPergunta = (pergunta) => {
   }
 };
 
+// ... (código posterior)
 
-  const renderOpcoes = (opcoes) => {
-    return opcoes.map((opcao, index) => (
-      <React.Fragment key={index}>
-        <label>
-          <Checkbox
-            type="checkbox"
-            name="opcao"
-            value={opcao}
-            checked={resposta.includes(opcao)}
-            onChange={() => toggleCheckbox(opcao)}
-          />
-          {opcao}
-        </label>
-        <br />
-      </React.Fragment>
-    ));
-  };
+
+const renderOpcoes = (opcoes) => {
+  return opcoes.map((opcao, index) => (
+    <React.Fragment key={index}>
+      <label>
+        <Checkbox
+          type="checkbox"
+          name="opcao"
+          value={opcao}
+          checked={resposta.includes(opcao)}
+          onChange={() => toggleCheckbox(opcao)}
+        />
+        {opcao}
+      </label>
+      <br />
+    </React.Fragment>
+  ));
+};
 
   const handleSubmit = (event) => {
     event.preventDefault();
