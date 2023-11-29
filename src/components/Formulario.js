@@ -169,8 +169,6 @@ const toggleCheckbox = (opcao) => {
   setMostrarErro(false);
 };
 
-// ... (código anterior)
-
 const renderPergunta = (pergunta) => {
   switch (pergunta.tipo) {
     case 'opcoes':
@@ -179,13 +177,28 @@ const renderPergunta = (pergunta) => {
           {renderOpcoes(pergunta.opcoes)}
           {(resposta.includes('CPF') || resposta.includes('CNPJ')) && (
             <React.Fragment>
-              <Label>Número do {resposta.includes('CPF') ? 'CPF' : 'CNPJ'}:</Label>
-              <Input
-                type="text"
-                placeholder="Digite sua resposta"
-                value={(resposta.includes('CPF') || resposta.includes('CNPJ')) ? resposta[1] : ''}
-                onChange={(e) => setResposta(['CPF', e.target.value])}
-              />
+              {resposta.includes('CPF') && (
+                <React.Fragment>
+                  <Label>Número do CPF:</Label>
+                  <Input
+                    type="text"
+                    placeholder="Digite sua resposta"
+                    value={resposta[1] || ''}
+                    onChange={(e) => setResposta(['CPF', e.target.value])}
+                  />
+                </React.Fragment>
+              )}
+              {resposta.includes('CNPJ') && (
+                <React.Fragment>
+                  <Label>Número do CNPJ:</Label>
+                  <Input
+                    type="text"
+                    placeholder="Digite sua resposta"
+                    value={resposta[1] || ''}
+                    onChange={(e) => setResposta(['CNPJ', e.target.value])}
+                  />
+                </React.Fragment>
+              )}
             </React.Fragment>
           )}
         </>
@@ -201,7 +214,6 @@ const renderPergunta = (pergunta) => {
           onChange={(e) => setResposta([e.target.value])}
         />
       );
-    
     default:
       return null;
   }
