@@ -386,6 +386,8 @@ const Formulario = ({ perguntaAtual, avancarPergunta }) => {
     setResposta([]);
   };
 
+  
+
   return (
     <FormContainer style={fade}>
       <PerguntaContainer style={slide}>
