@@ -236,23 +236,146 @@ const renderOpcoes = (opcoes) => {
     </React.Fragment>
   ));
 };
+const validarCPF = (cpf) => {
+  // Remover caracteres não numéricos
+  cpf = cpf.replace(/\D/g, '');
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
+  // Verificar se o CPF tem 11 dígitos
+  if (cpf.length !== 11) {
+    return false;
+  }
 
-    if (perguntaAtual <= perguntas.length) {
-      if (perguntaAtual === 1 && resposta.length === 0) {
-        setMostrarErro(true);
-      } else {
-        avancarPergunta();
-        setMostrarErro(false);
-      }
-    } else {
-      setConcluido(true);
+  // Verificar se todos os dígitos são iguais (caso contrário, CPF é inválido)
+  if (/^(\d)\1+$/.test(cpf)) {
+    return false;
+  }
+
+  // Algoritmo de validação do CPF
+  let sum = 0;
+  let remainder;
+
+  for (let i = 1; i <= 9; i++) {
+    sum += parseInt(cpf[i - 1]) * (11 - i);
+  }
+
+  remainder = (sum * 10) % 11;
+
+  if (remainder === 10 || remainder === 11) {
+    remainder = 0;
+  }
+
+  if (remainder !== parseInt(cpf[9])) {
+    return false;
+  }
+
+  sum = 0;
+
+  for (let i = 1; i <= 10; i++) {
+    sum += parseInt(cpf[i - 1]) * (12 - i);
+  }
+
+  remainder = (sum * 10) % 11;
+
+  if (remainder === 10 || remainder === 11) {
+    remainder = 0;
+  }
+
+  if (remainder !== parseInt(cpf[10])) {
+    return false;
+  }
+
+  return true;
+};
+const validarCNPJ = (cnpj) => {
+  // Remover caracteres não numéricos
+  cnpj = cnpj.replace(/\D/g, '');
+
+  // Verificar se o CNPJ tem 14 dígitos
+  if (cnpj.length !== 14) {
+    return false;
+  }
+
+  // Verificar se todos os dígitos são iguais (caso contrário, CNPJ é inválido)
+  if (/^(\d)\1+$/.test(cnpj)) {
+    return false;
+  }
+
+  // Algoritmo de validação do CNPJ
+  let size = cnpj.length - 2;
+  let numbers = cnpj.substring(0, size);
+  let digits = cnpj.substring(size);
+  let sum = 0;
+  let pos = size - 7;
+
+  for (let i = size; i >= 1; i--) {
+    sum += parseInt(numbers.charAt(size - i)) * pos--;
+    if (pos < 2) {
+      pos = 9;
     }
+  }
 
-    setResposta([]);
-  };
+  let result = sum % 11 < 2 ? 0 : 11 - (sum % 11);
+
+  if (result !== parseInt(digits.charAt(0))) {
+    return false;
+  }
+
+  size = size + 1;
+  numbers = cnpj.substring(0, size);
+  sum = 0;
+  pos = size - 7;
+
+  for (let i = size; i >= 1; i--) {
+    sum += parseInt(numbers.charAt(size - i)) * pos--;
+    if (pos < 2) {
+      pos = 9;
+    }
+  }
+
+  result = sum % 11 < 2 ? 0 : 11 - (sum % 11);
+
+  if (result !== parseInt(digits.charAt(1))) {
+    return false;
+  }
+
+  return true;
+};
+
+
+const handleSubmit = (event) => {
+  event.preventDefault();
+
+  if (perguntaAtual <= perguntas.length) {
+    if (perguntaAtual === 1 && resposta.length === 0) {
+      setMostrarErro(true);
+    } else {
+      // Verificar a validação de CPF ou CNPJ apenas na primeira pergunta
+      if (perguntaAtual === 1) {
+        if (resposta.includes('CPF')) {
+          const cpfValido = validarCPF(resposta[1]);
+          if (!cpfValido) {
+            setMostrarErro(true);
+            return;
+          }
+        } else if (resposta.includes('CNPJ')) {
+          const cnpjValido = validarCNPJ(resposta[1]);
+          if (!cnpjValido) {
+            setMostrarErro(true);
+            return;
+          }
+        }
+      }
+
+      avancarPergunta();
+      setMostrarErro(false);
+    }
+  } else {
+    setConcluido(true);
+  }
+
+  setResposta([]);
+};
+
 
   return (
     <FormContainer style={fade}>
