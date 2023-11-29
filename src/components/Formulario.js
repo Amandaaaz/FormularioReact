@@ -201,14 +201,11 @@ const renderPergunta = (pergunta) => {
           onChange={(e) => setResposta([e.target.value])}
         />
       );
-    // Adicione mais tipos conforme necessário
+    
     default:
       return null;
   }
 };
-
-// ... (código posterior)
-
 
 const renderOpcoes = (opcoes) => {
   return opcoes.map((opcao, index) => (
