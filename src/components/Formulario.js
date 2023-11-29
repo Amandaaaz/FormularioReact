@@ -341,7 +341,6 @@ const validarCNPJ = (cnpj) => {
   return true;
 };
 
-
 const handleSubmit = (event) => {
   event.preventDefault();
 
@@ -351,17 +350,27 @@ const handleSubmit = (event) => {
     } else {
       // Verificar a validação de CPF ou CNPJ apenas na primeira pergunta
       if (perguntaAtual === 1) {
-        if (resposta.includes('CPF')) {
-          const cpfValido = validarCPF(resposta[1]);
-          if (!cpfValido) {
+        if (resposta.includes('CPF') || resposta.includes('CNPJ')) {
+          const campoTexto = resposta[1] || '';
+          
+          // Verificar se o campo de texto está vazio
+          if (campoTexto.trim() === '') {
             setMostrarErro(true);
             return;
           }
-        } else if (resposta.includes('CNPJ')) {
-          const cnpjValido = validarCNPJ(resposta[1]);
-          if (!cnpjValido) {
-            setMostrarErro(true);
-            return;
+
+          if (resposta.includes('CPF')) {
+            const cpfValido = validarCPF(campoTexto);
+            if (!cpfValido) {
+              setMostrarErro(true);
+              return;
+            }
+          } else if (resposta.includes('CNPJ')) {
+            const cnpjValido = validarCNPJ(campoTexto);
+            if (!cnpjValido) {
+              setMostrarErro(true);
+              return;
+            }
           }
         }
       }
