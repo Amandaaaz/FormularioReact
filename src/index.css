@@ -3,8 +3,30 @@ body {
   font-family:  Andale Mono, monospace;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
 }
 
 code {
   font-family:  Andale Mono, monospace;
+}
+
+@media screen and (max-width: 768px) {
+  PerguntaContainer {
+    padding: 30px;
+  }
+  FormContainer {
+    width: 100%;
+  }
+  Input {
+    width: 100%;
+  }
+  checkbox{
+    width: 100%;
+  }
+}
+  Label,
+  Input,
+  MensagemFinal,
+  MensagemErro {
+    font-size: 14px;
 }
