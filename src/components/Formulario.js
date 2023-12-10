@@ -45,7 +45,11 @@ const Label = styled.label`
   font-size: 16px;
 `;
 
-const Input = styled.input`
+const Input = styled.input.attrs((props) => ({
+  type: props.type || 'text',
+  pattern: props.pattern || '[0-9]*', // Adiciona um padrão para aceitar apenas números
+  inputMode: props.inputMode || 'numeric', // Define o modo de entrada como numérico
+}))`
   width: 100%;
   padding: 8px;
   margin-top: 5px;
@@ -142,6 +146,8 @@ const Formulario = ({ perguntaAtual, avancarPergunta }) => {
   const [resposta, setResposta] = useState([]);
   const [concluido, setConcluido] = useState(false);
   const [mostrarErro, setMostrarErro] = useState(false);
+  const [tentativaCPF, setTentativaCPF] = useState(false);
+  const [tentativaCNPJ, setTentativaCNPJ] = useState(false);
 
   const fade = useSpring({ opacity: 1, from: { opacity: 0 } });
   const slide = useSpring({ marginLeft: '0%', from: { marginLeft: '-100%' } });
@@ -175,30 +181,36 @@ const Formulario = ({ perguntaAtual, avancarPergunta }) => {
           <>
             {renderOpcoes(pergunta.opcoes)}
             {(resposta.includes('CPF') || resposta.includes('CNPJ')) && (
-              <React.Fragment>
+              <>
                 {resposta.includes('CPF') && (
-                  <React.Fragment>
+                  <>
                     <Label>Número do CPF:</Label>
                     <Input
                       type="text"
-                      placeholder="Digite sua resposta"
+                      placeholder="Digite apenas números"
                       value={resposta[1] || ''}
-                      onChange={(e) => setResposta(['CPF', e.target.value])}
+                      onChange={(e) => {
+                        const onlyNumbers = e.target.value.replace(/\D/g, '');
+                        setResposta(['CPF', onlyNumbers]);
+                      }}
                     />
-                  </React.Fragment>
+                  </>
                 )}
                 {resposta.includes('CNPJ') && (
-                  <React.Fragment>
+                  <>
                     <Label>Número do CNPJ:</Label>
                     <Input
                       type="text"
-                      placeholder="Digite sua resposta"
+                      placeholder="Digite apenas números"
                       value={resposta[1] || ''}
-                      onChange={(e) => setResposta(['CNPJ', e.target.value])}
+                      onChange={(e) => {
+                        const onlyNumbers = e.target.value.replace(/\D/g, '');
+                        setResposta(['CNPJ', onlyNumbers]);
+                      }}
                     />
-                  </React.Fragment>
+                  </>
                 )}
-              </React.Fragment>
+              </>
             )}
           </>
         ) : (
@@ -238,7 +250,7 @@ const Formulario = ({ perguntaAtual, avancarPergunta }) => {
 
   const validarCPF = (cpf) => {
     // Remover caracteres não numéricos
-    cpf = cpf.replace(/\D/g, '');
+    // cpf = cpf.replace(/\D/g, '');
 
     // Verificar se o CPF tem 11 dígitos
     if (cpf.length !== 11) {
@@ -344,49 +356,59 @@ const Formulario = ({ perguntaAtual, avancarPergunta }) => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-
+  
     if (perguntaAtual <= perguntas.length) {
       const perguntaAtualInfo = perguntas[perguntaAtual - 1];
-
+  
       if (perguntaAtual === 1 && resposta.length === 0) {
         setMostrarErro('O campo está vazio');
         return;
       }
-
+  
       if (perguntaAtual === 1 && (resposta.includes('CPF') || resposta.includes('CNPJ'))) {
         const campoTexto = resposta[1] || '';
-
+  
         // Verificar se o campo de texto está vazio
         if (!campoTexto.trim()) {
           setMostrarErro('O campo está vazio');
           return;
         }
-
+  
         if (resposta.includes('CPF')) {
           const cpfValido = validarCPF(campoTexto);
           if (!cpfValido) {
-            setMostrarErro('CPF inválido');
-            return;
+            if (tentativaCPF) {
+              // Segunda tentativa com CPF válido
+              setTentativaCPF(false); // Resetar a flag de tentativa
+            } else {
+              setTentativaCPF(true);
+              setMostrarErro('CPF inválido');
+              return;
+            }
           }
         } else if (resposta.includes('CNPJ')) {
           const cnpjValido = validarCNPJ(campoTexto);
           if (!cnpjValido) {
-            setMostrarErro('CNPJ inválido');
-            return;
+            if (tentativaCNPJ) {
+              // Segunda tentativa com CNPJ válido
+              setTentativaCNPJ(false); // Resetar a flag de tentativa
+            } else {
+              setTentativaCNPJ(true);
+              setMostrarErro('CNPJ inválido');
+              return;
+            }
           }
         }
       }
-
+  
       avancarPergunta();
       setMostrarErro(false);
     } else {
       setConcluido(true);
     }
-
+  
     setResposta([]);
   };
-
-  
 
   return (
     <FormContainer style={fade}>
@@ -405,14 +427,15 @@ const Formulario = ({ perguntaAtual, avancarPergunta }) => {
               </React.Fragment>
             )}
             <Button
-              type="submit"
-              disabled={
-                mostrarErro ||
-                (perguntaAtual <= perguntas.length && resposta.length === 0)
-              }
-            >
-              {perguntaAtual < perguntas.length + 1 ? 'Próxima Pergunta' : 'Concluir'}
-            </Button>
+  onClick={handleSubmit}
+  type="submit"
+  disabled={
+    mostrarErro ||
+    (perguntaAtual <= perguntas.length && resposta.length === 0)
+  }
+>
+  {perguntaAtual < perguntas.length + 1 ? 'Próxima Pergunta' : 'Concluir'}
+</Button>
           </FormularioForm>
         )}
       </PerguntaContainer>
