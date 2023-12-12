@@ -15,7 +15,7 @@ const FormContainer = styled(animated.div)`
 const PerguntaContainer = styled(animated.div)`
   background-color: #f9f9f9;
   padding: 60px;
-  border-radius: 8px;
+  border-radius: 6px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
   transform-style: preserve-3d;
   transition: transform 0.5s ease-in-out;
