@@ -1,13 +1,13 @@
 body {
   margin: 0;
-  font-family:  Andale Mono, monospace;
+  font-family: 'Helvetica Neue', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   overflow-x: hidden;
 }
 
 code {
-  font-family:  Andale Mono, monospace;
+  font-family: 'Helvetica Neue', sans-serif;
 }
 
 @media screen and (max-width: 768px) {

@@ -14,7 +14,7 @@ const FormContainer = styled(animated.div)`
 
 const PerguntaContainer = styled(animated.div)`
   background-color: #f9f9f9;
-  padding: 60px;
+  padding: 70px;
   border-radius: 8px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
   transform-style: preserve-3d;
@@ -42,29 +42,31 @@ const FormularioForm = styled.form`
 const Label = styled.label`
   display: block;
   margin-bottom: 10px;
-  font-size: 16px;
+  font-size: 17px;
 `;
 
 const Input = styled.input.attrs((props) => ({
   type: props.type || 'text',
-  pattern: props.pattern || '[0-9]*', // Adiciona um padrão para aceitar apenas números
-  inputMode: props.inputMode || 'numeric', // Define o modo de entrada como numérico
+  pattern: props.pattern || '[0-9]*',
+  inputMode: props.inputMode || 'numeric',
 }))`
   width: 100%;
-  padding: 8px;
-  margin-top: 5px;
-  font-size: 14px;
+  padding: 12px; /* Ajustado o padding */
+  margin-top: 8px;
+  font-size: 16px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
 `;
 
 const Button = styled.button`
-  margin-top: 35px;
-  padding: 10px 16px;
+  margin-top: 30px; /* Ajustado o margin-top */
+  padding: 10px 15px;
   background-color: #4682B4;
   color: white;
   border: none;
   border-radius: 4px;
   cursor: pointer;
-  font-size: 16px;
+  font-size: 15px;
   font-family: Andale Mono, monospace;
 `;
 
@@ -76,13 +78,13 @@ const MensagemFinal = styled(animated.div)`
 `;
 
 const Checkbox = styled.input`
-  margin-top: 10px;
+  margin-top: 15px;
 `;
 
 const MensagemErro = styled.p`
   color: red;
   font-size: 14px;
-  margin-top: 5px;
+  margin-top: 10px;
 `;
 
 const perguntas = [
@@ -173,6 +175,7 @@ const Formulario = ({ perguntaAtual, avancarPergunta }) => {
     setResposta(opcoesSelecionadas);
     setMostrarErro(false);
   };
+
 
   const renderPergunta = (pergunta) => {
     switch (pergunta.tipo) {
@@ -377,30 +380,21 @@ const Formulario = ({ perguntaAtual, avancarPergunta }) => {
         if (resposta.includes('CPF')) {
           const cpfValido = validarCPF(campoTexto);
           if (!cpfValido) {
-            if (tentativaCPF) {
-              // Segunda tentativa com CPF válido
-              setTentativaCPF(false); // Resetar a flag de tentativa
-            } else {
-              setTentativaCPF(true);
-              setMostrarErro('CPF inválido');
-              return;
-            }
+            setTentativaCPF(true);
+            setMostrarErro('CPF inválido');
+            return;
           }
         } else if (resposta.includes('CNPJ')) {
           const cnpjValido = validarCNPJ(campoTexto);
           if (!cnpjValido) {
-            if (tentativaCNPJ) {
-              // Segunda tentativa com CNPJ válido
-              setTentativaCNPJ(false); // Resetar a flag de tentativa
-            } else {
-              setTentativaCNPJ(true);
-              setMostrarErro('CNPJ inválido');
-              return;
-            }
+            setTentativaCNPJ(true);
+            setMostrarErro('CNPJ inválido');
+            return;
           }
         }
       }
   
+      // Se chegou até aqui, a validação é bem-sucedida, mesmo com a mensagem de erro ativada.
       avancarPergunta();
       setMostrarErro(false);
     } else {
@@ -409,6 +403,8 @@ const Formulario = ({ perguntaAtual, avancarPergunta }) => {
   
     setResposta([]);
   };
+  
+  
 
   return (
     <FormContainer style={fade}>

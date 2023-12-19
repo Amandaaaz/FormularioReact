@@ -16,14 +16,6 @@ const AppContainer = styled.div`
   font-family:  Andale Mono, monospace;
 `;
 
-const Titulo = styled.h1`
-  font-size: 2em;
-  margin-bottom: -120px;
-  text-align: center;
-  font-family:  Andale Mono, monospace;
-  color: ${props => (props.modoEscuro ? '#4682B4' : '#4682B4')};
-`;
-
 function App() {
   const [perguntaAtual, setPerguntaAtual] = useState(1);
   const [modoEscuro, setModoEscuro] = useState(false);
@@ -40,7 +32,6 @@ function App() {
     <AppContainer modoEscuro={modoEscuro}>
       <DarkModeToggle toggleModoEscuro={toggleModoEscuro} />
       <header className="App-header">
-        <Titulo modoEscuro={modoEscuro}>Formulário</Titulo>
         <Formulario
           perguntaAtual={perguntaAtual}
           avancarPergunta={avancarPergunta}
