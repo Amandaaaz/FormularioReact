@@ -110,7 +110,7 @@ const Checkbox = styled.input`
   margin-top: 15px;
   position: relative;
   cursor: pointer;
-  vertical-align: baseline;
+  vertical-align: bottom;
 
   &:checked {
     background-color: #4682B4;
