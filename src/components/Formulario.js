@@ -99,7 +99,33 @@ const MensagemFinal = styled(animated.div)`
 `;
 
 const Checkbox = styled.input`
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  border: 2px solid #4682B4;
+  border-radius: 4px;
+  width: 18px;
+  height: 18px;
+  outline: none;
   margin-top: 15px;
+  position: relative;
+  cursor: pointer;
+  vertical-align: baseline;
+
+  &:checked {
+    background-color: #4682B4;
+    border-color: #4682B4;
+  }
+
+  &:checked::before {
+    content: '✔';
+    font-size: 14px;
+    color: white;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
 `;
 
 const MensagemErro = styled.p`
