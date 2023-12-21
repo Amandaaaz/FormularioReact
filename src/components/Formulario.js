@@ -23,6 +23,11 @@ const BotaoComecar = styled.button`
   cursor: pointer;
   font-size: 15px;
   font-family: Andale Mono, monospace;
+  transition: background-color 0.3s;
+
+  &:hover {
+    background-color: #305d8e; /* Altere a cor desejada no hover */
+  }
 `;
 
 const FormContainer = styled(animated.div)`
@@ -89,6 +94,11 @@ const Button = styled.button`
   cursor: pointer;
   font-size: 15px;
   font-family: Andale Mono, monospace;
+  transition: background-color 0.3s;
+
+  &:hover {
+    background-color: #305d8e; /* Altere a cor desejada no hover */
+  }
 `;
 
 const MensagemFinal = styled(animated.div)`
@@ -136,57 +146,57 @@ const MensagemErro = styled.p`
 
 const perguntas = [
   {
-    texto: 'Você deseja começar com CPF ou CNPJ?',
+    texto: '1. Você deseja começar com CPF ou CNPJ?',
     tipo: 'opcoes',
     opcoes: ['CPF', 'CNPJ'],
   },
   {
-    texto: 'Sua Empresa faz parte do Softex?',
+    texto: '2. Sua Empresa faz parte do Softex?',
     tipo: 'opcoes',
     opcoes: ['Sim', 'Não'],
   },
   {
-    texto: 'Conhece o Match Day?',
+    texto: '3 .Conhece o Match Day?',
     tipo: 'opcoes',
     opcoes: ['Sim', 'Não'],
   },
   {
-    texto: 'Nome da Empresa:',
+    texto: '4. Nome da Empresa:',
     tipo: 'texto',
   },
   {
-    texto: 'Quantos Funcionários?',
+    texto: '5. Quantos Funcionários?',
     tipo: 'opcoes',
     opcoes: ['4 a 10', '11 a 30', '31 a 50', '50+', '100+'],
   },
   {
-    texto: 'Qual a Sua Função Na Empresa?*',
+    texto: '6. Qual a Sua Função Na Empresa?*',
     tipo: 'opcoes',
     opcoes: ['CEO', 'SENIOR', 'FOUNDER', 'JR', 'VENDEDOR', 'REPRESENTANTE', 'OUTROS'],
   },
   {
-    texto: 'Sua Empresa Pertence a qual iniciativa setorial?',
+    texto: '7. Sua Empresa Pertence a qual iniciativa setorial?',
     tipo: 'texto',
   },
   {
-    texto: 'Sua Empresa é um negócio de impacto?',
+    texto: '8. Sua Empresa é um negócio de impacto?',
     tipo: 'texto',
   },
   {
-    texto: 'Qual a finalidade do uso da sala ou do laboratório da softexlabs?',
+    texto: '9. Qual a finalidade do uso da sala ou do laboratório da softexlabs?',
     tipo: 'texto',
   },
   {
-    texto: 'Você Busca criar uma patente na SoftexLabs?',
+    texto: '10. Você Busca criar uma patente na SoftexLabs?',
     tipo: 'opcoes',
     opcoes: ['Sim', 'Não'],
   },
   {
-    texto: 'Quantas Pessoas utilizarão a sala (Máximo 8 pessoas):',
+    texto: '11. Quantas Pessoas utilizarão a sala (Máximo 8 pessoas):',
     tipo: 'texto',
   },
   {
-    texto: 'Descreva dia e horário:',
+    texto: '12. Descreva dia e horário:',
     tipo: 'texto',
   },
 ];
@@ -232,7 +242,7 @@ const Formulario = ({ perguntaAtual, avancarPergunta }) => {
   const renderPergunta = (pergunta) => {
     switch (pergunta.tipo) {
       case 'opcoes':
-        return pergunta.texto === 'Você deseja começar com CPF ou CNPJ?' ? (
+        return pergunta.texto === '1. Você deseja começar com CPF ou CNPJ?' ? (
           <>
             {renderOpcoes(pergunta.opcoes)}
             {(resposta.includes('CPF') || resposta.includes('CNPJ')) && (
