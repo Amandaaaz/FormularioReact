@@ -45,13 +45,9 @@ const PerguntaContainer = styled(animated.div)`
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
   transform-style: preserve-3d;
   transition: transform 0.5s ease-in-out;
-  backface-visibility: hidden;
   image-rendering: optimizeQuality;
   font-smooth: always;
   -webkit-font-smoothing: antialiased;
-  &:hover {
-    transform: scale(1.02) rotateY(1.5deg) rotateX(1.5deg);
-  }
 `;
 
 const DarkModePerguntaContainer = styled(PerguntaContainer)`
@@ -77,11 +73,17 @@ const Input = styled.input.attrs((props) => ({
   inputMode: props.inputMode || 'numeric',
 }))`
   width: 100%;
-  padding: 12px; /* Ajustado o padding */
+  padding: 8px 0; /* Removido o padding superior e ajustado o padding inferior */
   margin-top: 8px;
   font-size: 16px;
-  border: 1px solid #ddd;
-  border-radius: 4px;
+  border: none;
+  background-color:#f9f9f9;
+  border-bottom: 2px solid #ddd; /* Adicionado estilo para a linha inferior */
+  outline: none;
+
+  &:focus {
+    border-bottom: 2px solid #4682B4; /* Altere a cor desejada ao focar */
+  }
 `;
 
 const Button = styled.button`
@@ -211,6 +213,7 @@ const Formulario = ({ perguntaAtual, avancarPergunta }) => {
 
   const fade = useSpring({ opacity: 1, from: { opacity: 0 } });
   const slide = useSpring({ marginLeft: '0%', from: { marginLeft: '-100%' } });
+  
 
   const handleComecar = () => {
     setMostrarMensagemInicial(false);
@@ -285,7 +288,7 @@ const Formulario = ({ perguntaAtual, avancarPergunta }) => {
         return (
           <Input
             type="text"
-            placeholder="Digite sua resposta"
+            placeholder="Digite sua resposta aqui..."
             value={resposta[0] || ''}
             onChange={(e) => setResposta([e.target.value])}
           />
